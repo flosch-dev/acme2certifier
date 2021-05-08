@@ -16,6 +16,7 @@ jobs:
       fail-fast: false
       matrix:
         keylength: [2048]
+        acme-sh-version: [2.8.9, latest]
     steps:
     - name: "checkout GIT"
       uses: actions/checkout@v2
@@ -47,7 +48,7 @@ jobs:
 
     - name: "[ PREPARE ] prepare acme.sh container"
       run: |
-        docker run --rm -id -v "$(pwd)/acme-sh":/acme.sh --network acme --name=acme-sh neilpang/acme.sh:dev daemon
+        docker run --rm -id -v "$(pwd)/acme-sh":/acme.sh --network acme --name=acme-sh neilpang/acme.sh:${{ matrix.acme-sh-version }} daemon
         docker exec -id acme-sh apk add dnsmasq
         sudo cp .github/dns_test.sh acme-sh/
         docker exec -id acme-sh mv /acme.sh/dns_test.sh /root/.acme.sh/dnsapi/
