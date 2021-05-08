@@ -49,7 +49,7 @@ jobs:
       run: |
         docker run --rm -id -v "$(pwd)/acme-sh":/acme.sh --network acme --name=acme-sh neilpang/acme.sh:dev daemon
         docker exec -id acme-sh apk add dnsmasq
-        cp .github/dns_test.sh acme-sh/
+        sudo cp .github/dns_test.sh acme-sh/
         docker exec -id acme-sh mv /acme.sh/dns_test.sh /root/.acme.sh/dnsapi/
         docker exec -id acme-sh chmod +x /root/.acme.sh/dnsapi/dns_test.sh
 
@@ -76,18 +76,18 @@ jobs:
     #    docker run -i -v $PWD/lego:/.lego/ --rm --name lego --network acme goacme/lego -s http://acme-srv -a --email "lego@example.com" --eab --kid keyid_02 --hmac bWFjXzAy -d lego.acme --tls run
     #    sudo openssl verify -CAfile examples/Docker/data/acme_ca/root-ca-cert.pem -untrusted examples/Docker/data/acme_ca/sub-ca-cert.pem lego/certificates/lego.acme.crt
 
-    - name: "[ * ] collecting test logs"
-      if: ${{ failure() }}
-      run: |
-        mkdir -p ${{ github.workspace }}/artifact/upload
-        sudo cp -rp examples/Docker/data/ ${{ github.workspace }}/artifact/data/
-        cd examples/Docker
-        docker-compose logs > ${{ github.workspace }}/artifact/docker-compose.log
-        sudo tar -C ${{ github.workspace }}/artifact/ -cvzf ${{ github.workspace }}/artifact/upload/artifact.tar.gz docker-compose.log data
+    #- name: "[ * ] collecting test logs"
+    #  if: ${{ failure() }}
+    #  run: |
+    #    mkdir -p ${{ github.workspace }}/artifact/upload
+    #    sudo cp -rp examples/Docker/data/ ${{ github.workspace }}/artifact/data/
+    #    cd examples/Docker
+    #    docker-compose logs > ${{ github.workspace }}/artifact/docker-compose.log
+    #    sudo tar -C ${{ github.workspace }}/artifact/ -cvzf ${{ github.workspace }}/artifact/upload/artifact.tar.gz docker-compose.log data
 
-    - name: "[ * ] uploading artificates"
-      uses: actions/upload-artifact@v2
-      if: ${{ failure() }}
-      with:
-        name: eab-${{ matrix.keylength }}.tar.gz
-        path: ${{ github.workspace }}/artifact/upload/
+    #- name: "[ * ] uploading artificates"
+    #  uses: actions/upload-artifact@v2
+    #  if: ${{ failure() }}
+    #  with:
+    #    name: eab-${{ matrix.keylength }}.tar.gz
+    #    path: ${{ github.workspace }}/artifact/upload/
