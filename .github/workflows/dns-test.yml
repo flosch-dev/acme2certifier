@@ -16,7 +16,7 @@ jobs:
       fail-fast: false
       matrix:
         keylength: [2048]
-        acme-sh-version: [2.8.9, latest]
+        acme-sh-version: [2.8.8, latest]
     steps:
     - name: "checkout GIT"
       uses: actions/checkout@v2
