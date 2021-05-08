@@ -45,14 +45,30 @@ jobs:
     - name: "Test http://acme-srv/directory is accessable again"
       run: docker run -i --rm --network acme curlimages/curl -f http://acme-srv/directory
 
+    - name: "[ PREPARE ] prepare acme.sh container"
+      run: |
+        docker run --rm -id -v "$(pwd)/acme-sh":/acme.sh --network acme --name=acme-sh neilpang/acme.sh:dev daemon
+        docker exec -id acme-sh apk add dnsmasq
+        cp .github/dns_test.sh acme-sh/
+        docker exec -id acme-sh mv /acme.sh/dns_test.sh /root/.acme.sh/dnsapi/
+        docker exec -id acme-sh chmod +x /root/.acme.sh/dnsapi/dns_test.sh
+
+    - name: "[ PREPARE ] set DNS server"
+      run: |
+        docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' acme-srv >> examples/Docker/data/acme_srv.cfg
+        cd examples/Docker/
+        docker-compose restart
+        docker-compose logs
+
+
     #- name: "[ PREPARE ] prepare acme.sh container"
     #  run: |
     #    docker run --rm -id -v "$(pwd)/acme-sh":/acme.sh --network acme --name=acme-sh neilpang/acme.sh:dev daemon
 
-    #- name: "[ ENROLL ] acme.sh"
-    #  run: |
-    #    docker exec -i acme-sh acme.sh --server http://acme-srv --accountemail 'acme-sh@example.com' --issue -d acme-sh.acme --alpn --standalone --debug 3 --output-insecure --force
-    #    openssl verify -CAfile examples/Docker/data/acme_ca/root-ca-cert.pem -untrusted examples/Docker/data/acme_ca/sub-ca-cert.pem acme-sh/acme-sh.acme/acme-sh.acme.cer
+    - name: "[ ENROLL ] acme.sh"
+      run: |
+        docker exec -i acme-sh acme.sh --server http://acme-srv --accountemail 'acme-sh@example.com' --issue --dns dns_test -d acme-sh.acme --alpn --standalone --debug 3 --output-insecure --force
+        openssl verify -CAfile examples/Docker/data/acme_ca/root-ca-cert.pem -untrusted examples/Docker/data/acme_ca/sub-ca-cert.pem acme-sh/acme-sh.acme/acme-sh.acme.cer
 
     #- name: "[ ENROLL ] lego"
     #  run: |
