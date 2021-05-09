@@ -59,6 +59,8 @@ jobs:
         cd examples/Docker/
         docker-compose stop
         sudo sed -i "s/IP-ADDR/$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' acme-sh)/g" data/acme_srv.cfg
+        docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' acme-sh
+        sudo cat data/acme_srv.cfg
         docker-compose start
         docker-compose logs
 
