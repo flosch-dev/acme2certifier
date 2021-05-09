@@ -71,15 +71,10 @@ jobs:
         docker exec -i acme-sh acme.sh --dnssleep 10 --server http://acme-srv --accountemail 'acme-sh@example.com' --issue --dns dns_test -d acme-sh.acme --alpn --standalone --debug 3 --output-insecure --force
         openssl verify -CAfile examples/Docker/data/acme_ca/root-ca-cert.pem -untrusted examples/Docker/data/acme_ca/sub-ca-cert.pem acme-sh/acme-sh.acme/acme-sh.acme.cer
 
-    - name: "[ Test ] check TXT record exists"
-      if: ${{ failure() }}
-      run: |
-        docker run -i --network acme tutum/dnsutils dig -t TXT _acme.challange.acme-sh.acme @$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' acme2certifier_acme-srv_1)
-
     - name: "[ TEst ] check TXT record exists"
       if: ${{ failure() }}
       run: |
-        dig -t TXT _acme.challange.acme-sh.acme @$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' acme2certifier_acme-srv_1)
+        dig -t TXT _acme-challenge.acme-sh.acme @$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' acme-sh)
 
     #- name: "[ ENROLL ] lego"
     #  run: |
