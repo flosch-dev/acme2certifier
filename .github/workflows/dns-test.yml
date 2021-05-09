@@ -51,7 +51,6 @@ jobs:
         docker run --rm -id -v "$(pwd)/acme-sh":/acme.sh --network acme --name=acme-sh neilpang/acme.sh:${{ matrix.acme-sh-version }} daemon
         sudo cp .github/dns_test.sh acme-sh/
         docker exec -i acme-sh apk add dnsmasq
-        docker exec -i acme-sh dnsmasq
         docker exec -i acme-sh mv /acme.sh/dns_test.sh /root/.acme.sh/dnsapi/
         docker exec -i acme-sh chmod +x /root/.acme.sh/dnsapi/dns_test.sh
 
