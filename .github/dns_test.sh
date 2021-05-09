@@ -17,9 +17,9 @@ dns_test_rm() {
   _info "removing dns record"
   _debug fulldomain "$fulldomain"
   _debug txtvalue "$txtvalue"
-  grep -v "txt-record=${fulldomain},\"${txtvalue}\"" /dnsmasq.conf > /dnsmasq.conf
-  killall -9 dnsmasq
-  dnsmasq -C /dnsmasq.conf
+#  grep -v "txt-record=${fulldomain},\"${txtvalue}\"" /dnsmasq.conf > /dnsmasq.conf
+#  killall -9 dnsmasq
+#  dnsmasq -C /dnsmasq.conf
 }
 
 ####################  Private functions below ##################################
