@@ -58,7 +58,9 @@ jobs:
       run: |
         cd examples/Docker/
         docker-compose stop
+        docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' acme-sh
         DNS_IP=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' acme-sh)
+        echo $DNS_IP
         sudo sed -i "s/IP-ADDR/$DNS_IP/g" data/acme_srv.cfg
         sudo cat data/acme_srv.cfg
         docker-compose start
