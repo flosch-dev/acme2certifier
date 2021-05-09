@@ -59,16 +59,9 @@ jobs:
         cd examples/Docker/
         docker-compose stop
         docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' acme-sh
-        DNS_IP=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' acme-sh)
-        echo $DNS_IP
-        sudo sed -i "s/IP-ADDR/$DNS_IP/g" data/acme_srv.cfg
-        sudo cat data/acme_srv.cfg
+        sudo sed -i "s/IP-ADDR/$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' acme-sh)/g" data/acme_srv.cfg
         docker-compose start
         docker-compose logs
-
-    #- name: "[ PREPARE ] prepare acme.sh container"
-    #  run: |
-    #    docker run --rm -id -v "$(pwd)/acme-sh":/acme.sh --network acme --name=acme-sh neilpang/acme.sh:dev daemon
 
     - name: "[ ENROLL ] acme.sh"
       run: |
