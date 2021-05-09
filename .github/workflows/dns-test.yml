@@ -57,9 +57,10 @@ jobs:
 
     - name: "[ PREPARE ] set DNS server"
       run: |
-        sed -i "s/IP-ADDR/$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' acme-sh)/g" examples/Docker/data/acme_srv.cfg
         cd examples/Docker/
-        docker-compose restart
+        docker-compose stop
+        sudo sed -i "s/IP-ADDR/$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' acme-sh)/g" data/acme_srv.cfg
+        docker-compose start
         docker-compose logs
 
     #- name: "[ PREPARE ] prepare acme.sh container"
