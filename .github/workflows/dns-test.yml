@@ -77,9 +77,9 @@ jobs:
       run: |
         docker exec -i acme-sh ps -a
         docker exec -i acme-sh netstat -anu
-        dig -t TXT _acme-challenge.acme-sh.acme @$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' acme-sh)
         cd examples/Docker/
         docker-compose logs
+        dig -t TXT _acme-challenge.acme-sh.acme @$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' acme-sh)
 
     #- name: "[ ENROLL ] lego"
     #  run: |
