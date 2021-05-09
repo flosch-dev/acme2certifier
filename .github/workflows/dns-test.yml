@@ -56,7 +56,7 @@ jobs:
 
     - name: "[ PREPARE ] set DNS server"
       run: |
-        docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' acme2certifier_acme-srv_1 >> examples/Docker/data/acme_srv.cfg
+        docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' acme-sh >> examples/Docker/data/acme_srv.cfg
         cd examples/Docker/
         docker-compose restart
         docker-compose logs
