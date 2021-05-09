@@ -71,22 +71,22 @@ jobs:
 
     - name: "[ ENROLL ] acme.sh - multi domain"
       run: |
-        docker exec -i acme-sh acme.sh --dnssleep 10 --server http://acme-srv --accountemail 'acme-sh@example.com' --issue --dns dns_test -d acme-sh.multi1 -d acme-sh.multi2 --alpn --standalone --debug 3 --output-insecure --force
+        docker exec -i acme-sh acme.sh --dnssleep 10 --server http://acme-srv --accountemail 'acme-sh@example.com' --issue --dns dns_test -d acme-sh.multi1 -d acme-sh.multi2 --standalone --debug 3 --output-insecure --force
         openssl verify -CAfile examples/Docker/data/acme_ca/root-ca-cert.pem -untrusted examples/Docker/data/acme_ca/sub-ca-cert.pem acme-sh/acme-sh.multi1/acme-sh.multi1.cer
         openssl verify -CAfile examples/Docker/data/acme_ca/root-ca-cert.pem -untrusted examples/Docker/data/acme_ca/sub-ca-cert.pem acme-sh/acme-sh.multi1/acme-sh.multi2.cer
 
     - name: "[ ENROLL ] acme.sh - double domain"
       run: |
-        docker exec -i acme-sh acme.sh --dnssleep 10 --server http://acme-srv --accountemail 'acme-sh@example.com' --issue --dns dns_test -d acme-sh.double -d acme-sh.double --alpn --standalone --debug 3 --output-insecure --force
+        docker exec -i acme-sh acme.sh --dnssleep 10 --server http://acme-srv --accountemail 'acme-sh@example.com' --issue --dns dns_test -d acme-sh.double -d acme-sh.double --standalone --debug 3 --output-insecure --force
 
     - name: "[ ENROLL ] acme.sh - single wildcard domain"
       run: |
-        docker exec -i acme-sh acme.sh --dnssleep 10 --server http://acme-srv --accountemail 'acme-sh@example.com' --issue --dns dns_test -d *.acme-sh.wildcard --alpn --standalone --debug 3 --output-insecure --force
+        docker exec -i acme-sh acme.sh --dnssleep 10 --server http://acme-srv --accountemail 'acme-sh@example.com' --issue --dns dns_test -d *.acme-sh.wildcard --standalone --debug 3 --output-insecure --force
         openssl verify -CAfile examples/Docker/data/acme_ca/root-ca-cert.pem -untrusted examples/Docker/data/acme_ca/sub-ca-cert.pem acme-sh/acme-sh.wildcard/acme-sh.wildcard.cer
 
     - name: "[ ENROLL ] acme.sh - double wildcard domain"
       run: |
-        docker exec -i acme-sh acme.sh --dnssleep 10 --server http://acme-srv --accountemail 'acme-sh@example.com' --issue --dns dns_test -d acme-sh.wildcard -d *.acme-sh.wildcard --alpn --standalone --debug 3 --output-insecure --force
+        docker exec -i acme-sh acme.sh --dnssleep 10 --server http://acme-srv --accountemail 'acme-sh@example.com' --issue --dns dns_test -d acme-sh.wildcard -d *.acme-sh.wildcard --standalone --debug 3 --output-insecure --force
         openssl verify -CAfile examples/Docker/data/acme_ca/root-ca-cert.pem -untrusted examples/Docker/data/acme_ca/sub-ca-cert.pem acme-sh/acme-sh.wildcard/acme-sh.wildcard.cer
 
     - name: "[ Test ] check TXT record exists"
