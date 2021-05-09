@@ -72,7 +72,7 @@ jobs:
     - name: "[ ENROLL ] acme.sh - single wildcard domain"
       run: |
         docker exec -i acme-sh acme.sh --dnssleep 10 --server http://acme-srv --accountemail 'acme-sh@example.com' --issue --dns dns_test -d *.acme-sh.wildcard --standalone --debug 3 --output-insecure --force
-        openssl verify -CAfile examples/Docker/data/acme_ca/root-ca-cert.pem -untrusted examples/Docker/data/acme_ca/sub-ca-cert.pem acme-sh/acme-sh.wildcard/acme-sh.wildcard.cer
+        openssl verify -CAfile examples/Docker/data/acme_ca/root-ca-cert.pem -untrusted examples/Docker/data/acme_ca/sub-ca-cert.pem acme-sh/*acme-sh.wildcard/*acme-sh.wildcard.cer
 
     - name: "[ ENROLL ] acme.sh - double wildcard domain"
       run: |
