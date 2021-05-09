@@ -74,8 +74,8 @@ jobs:
     - name: "[ TEst ] check TXT record exists"
       if: ${{ failure() }}
       run: |
-        docker exec -id acme-sh ps -a
-        docker exec -id acme-sh netstat -anu
+        docker exec -i acme-sh ps -a
+        docker exec -i acme-sh netstat -anu
         dig -t TXT _acme-challenge.acme-sh.acme @$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' acme-sh)
 
     #- name: "[ ENROLL ] lego"
