@@ -5,7 +5,7 @@ dns_test_add() {
   txtvalue=$2
   _info "adding dns record: ${fulldomain}: ${txtvalue}"
   echo "txt-record=${fulldomain},\"${txtvalue}\"" >> /dnsmasq.conf
-  killall dnsmasq
+  killall -9 dnsmasq
   dnsmasq -C /dnsmasq.conf
 }
 
@@ -18,7 +18,7 @@ dns_test_rm() {
   _debug fulldomain "$fulldomain"
   _debug txtvalue "$txtvalue"
   grep -v "txt-record=${fulldomain},\"${txtvalue}\"" /dnsmasq.conf > /dnsmasq.conf
-  killall dnsmasq
+  killall -9 dnsmasq
   dnsmasq -C /dnsmasq.conf
 }
 
